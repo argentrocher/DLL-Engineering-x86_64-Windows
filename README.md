@@ -9,7 +9,7 @@ Il incombe à l'utilisateur final de s'assurer de la sécurisation de son enviro
 
 <br><br>
 
-<h3>Bienvenue sur ce répertoire qui permet d'effectuer du DLL engenering.
+<h3>Bienvenue sur ce répertoire qui permet d'effectuer du DLL Engineering.
 Il a été conçu dans le but de servir d'extension à un interpréteur (fr-simplecode, <a href="https://github.com/argentrocher/fr-simplecode">voir le github</a>).</h3>
 <br><br>
 
