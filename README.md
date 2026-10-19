@@ -48,3 +48,9 @@ hello &#92; world ; !</pre>
 
 L'API est en cour d'écriture pour rajouter à frc_service.dll le moyen de passer des structures en mémoire qui sont compatible en C/windows.
 Le code est déjà fonctionnel pour l'écriture, il manque encore la modification de valeur de structure existante et la lecture d'une structure de réponse.
+
+<br><br>
+
+> [!TIP]  <h3>Pour compiler L'ASM, utiliser le compilateur asm_cpp64.exe de mon répertoire <a href="https://github.com/argentrocher/FRX">FRX</a></h3>
+
+
