@@ -56,6 +56,7 @@ $//{print("RegisterClassExA: text(var_local|RegisterClassExA|)")}//$
 	{print("Erreur d'allocation mémoire")}
 	{exit}
 }
+{dll|msvcrt.dll|[(void;addr;char)strcpy("text(var_local|result_buffer|)";"")]}
 
 {var_local|hwnd|="text(dll|user32.dll|[(addr;long_int;addr;char;QWORD;long_int;long_int;long_int;long_int;long_int;long_int;addr;long_int)CreateWindowExA(0;"text(var_local|lpszClassName|)";"Ma fenetre";"00CA0000";100;100;400;180;0;0;"text(var_local|hInstance|)";0)])"}
 $//{print("hwnd: text(var_local|hwnd|)")}//$
