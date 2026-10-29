@@ -1,0 +1,176 @@
+FRC 
+
+$//test de création de fenêtre 100% interpréteur pour créer une fenêtre input fonctionnelle//$
+
+
+#init[[[
+{if||version()||<||0.5||
+	{print("code incompatible avec vôtre version fr-simplecode"version())}
+	{exit}
+}
+
+{dll||[(void;int)init_table_global(1)]}
+
+{var_local|hInstance|="text(dll|kernel32.dll|[(addr;long_int)GetModuleHandleA(0)])"}
+$//{print("hInstance: text(var_local|hInstance|)")}//$
+
+{var_local|DefWindowProcA|="text(dll|user32.dll|[(pointoraddr)DefWindowProcA()])"}
+$//{print("DefWindowProcA: text(var_local|DefWindowProcA|)")}//$
+
+{var_local|lpszClassName|="text(dll|msvcrt.dll|[(addr)_strdup("FRC_WINDOW")])"}
+{if?||text_eval("text(var_local|lpszClassName|)";"?=";"0000000000000000")||
+	{print("Erreur d'allocation mémoire")}
+	{exit}
+}
+
+{var_local|hBrush|="text(dll|gdi32.dll|[(addr;DWORD)CreateSolidBrush("000000FF")])"}
+{if?||text_eval("text(var_local|hBrush|)";"?=";"0000000000000000")||
+	{print("Erreur création du hBrush")}
+	{exit}
+}
+
+{var_local|WNDCLASSEXA|="text(dll||[(addr;char)create_table("int;80;int;0;addr;text(var_local|DefWindowProcA|);int;0;int;0;addr;text(var_local|hInstance|);long_int;0;long_int;0;addr;text(var_local|hBrush|);long_int;0;addr;text(var_local|lpszClassName|);long_int;0")])"}
+$//{print("WNDCLASSEXA: text(var_local|WNDCLASSEXA|)")}//$
+{if?||text_eval("text(var_local|WNDCLASSEXA|)";"?=";"0000000000000000")||
+	{print("Erreur de création de la table structure WNDCLASSEXA")}
+	{exit}
+}
+{var_local|WNDCLASSEXA_ptr|="text(dll||[(addr;addr)get_struct_from_table_alloc("text(var_local|WNDCLASSEXA|)")])"}
+$//{print("WNDCLASSEXA_ptr: text(var_local|WNDCLASSEXA_ptr|)")}//$
+{if?||text_eval("text(var_local|WNDCLASSEXA_ptr|)";"?=";"0000000000000000")||
+	{print("Erreur de création de la structure WNDCLASSEXA")}
+	{exit}
+}
+
+{var_local|RegisterClassExA|="text(dll|user32.dll|[(addr;addr)RegisterClassExA("text(var_local|WNDCLASSEXA_ptr|)")])"}
+$//{print("RegisterClassExA: text(var_local|RegisterClassExA|)")}//$
+{if?||text_eval("text(var_local|RegisterClassExA|)";"?=";"0000000000000000")||
+	{print("Erreur de l'enregistrement de WNDCLASSEXA")}
+	{exit}
+}
+
+{dll||[(void;addr)free_struct_from_table_alloc("text(var_local|WNDCLASSEXA_ptr|)")]}
+
+{var_local|result_buffer|="text(dll|msvcrt.dll|[(addr;int)malloc(1024)])"}
+{if?||text_eval("text(var_local|result_buffer|)";"?=";"0000000000000000")||
+	{print("Erreur d'allocation mémoire")}
+	{exit}
+}
+
+{var_local|hwnd|="text(dll|user32.dll|[(addr;long_int;addr;char;QWORD;long_int;long_int;long_int;long_int;long_int;long_int;addr;long_int)CreateWindowExA(0;"text(var_local|lpszClassName|)";"Ma fenetre";"00CA0000";100;100;400;180;0;0;"text(var_local|hInstance|)";0)])"}
+$//{print("hwnd: text(var_local|hwnd|)")}//$
+{if?||text_eval("text(var_local|hwnd|)";"?=";"0000000000000000")||
+	{print("Erreur de création de la fenêtre")}
+	{exit}
+}
+
+{dll|user32.dll|[(void;addr;int)ShowWindow("text(var_local|hwnd|)";5)]}
+{dll|user32.dll|[(void;addr)UpdateWindow("text(var_local|hwnd|)")]}
+
+{var_local|hwndEdit|="text(dll|user32.dll|[(addr;long_int;char;char;QWORD;long_int;long_int;long_int;long_int;addr;long_int;addr;long_int)CreateWindowExA(0;"EDIT";"";"50010080";20;30;360;28;"text(var_local|hwnd|)";101;"text(var_local|hInstance|)";0)])"}
+{var_local|hwndOK|="text(dll|user32.dll|[(addr;long_int;char;char;QWORD;long_int;long_int;long_int;long_int;addr;long_int;addr;long_int)CreateWindowExA(0;"BUTTON";"OK";"50010001";100;80;100;32;"text(var_local|hwnd|)";102;"text(var_local|hInstance|)";0)])"}
+{var_local|hwndCancel|="text(dll|user32.dll|[(addr;long_int;char;char;QWORD;long_int;long_int;long_int;long_int;addr;long_int;addr;long_int)CreateWindowExA(0;"BUTTON";"Annuler";"50010000";210;80;100;32;"text(var_local|hwnd|)";103;"text(var_local|hInstance|)";0)])"}
+$//{dll|msvcrt.dll|[(void;char;addr;addr;addr)printf("hwndEdit: 0x%016llx, hwndOK: 0x%016llx, hwndCancel: 0x%016llx[/n]";"text(var_local|hwndEdit|)";"text(var_local|hwndOK|)";"text(var_local|hwndCancel|)")]}//$
+
+{var_local|hFont|="text(dll|gdi32.dll|[(addr;int;int;int;int;int;int;int;int;int;int;int;int;int;char)CreateFontA(-18;0;0;0;400;0;0;0;0;0;0;0;0;"Segoe UI")])"}
+{if?||text_eval("text(var_local|hFont|)";"?=";"0000000000000000")||
+	{print("Erreur de création de police de caractère")}
+	{exit}
+}
+
+{dll|user32.dll|[(long_int;addr;int;addr;long_int)SendMessageA("text(var_local|hwndEdit|)";48;"text(var_local|hFont|)";1)]}
+
+{dll|user32.dll|[(void;addr)SetFocus("text(var_local|hwndEdit|)")]}
+
+
+{var_local|MSG|="text(dll||[(addr;char)create_table("QWORD;0;DWORD;0;QWORD;0;QWORD;0;DWORD;0;DWORD;0;DWORD;0")])"}
+$//{print("MSG: text(var_local|MSG|)")}//$
+{if?||text_eval("text(var_local|MSG|)";"?=";"0000000000000000")||
+	{print("Erreur de création de la table structure MSG")}
+	{exit}
+}
+{var_local|MSG_ptr|="text(dll||[(addr;addr)get_struct_from_table_alloc("text(var_local|MSG|)")])"}
+$//{print("MSG_ptr: text(var_local|MSG_ptr|)")}//$
+{if?||text_eval("text(var_local|MSG_ptr|)";"?=";"0000000000000000")||
+	{print("Erreur de création de la structure MSG")}
+	{exit}
+} 
+
+{repeat||endless||
+	{var_local|PeekMessageA|=dll|user32.dll|[(int;addr;long_int;int;int;int)PeekMessageA("text(var_local|MSG_ptr|)";0;0;0;1)]}
+	{if!||(var_local|PeekMessageA|)||
+		{if!||(dll|user32.dll|[(int;addr)IsWindow("text(var_local|hwnd|)")])||
+			{dll|user32.dll|[(void;int)PostQuitMessage(0)]}
+		else
+			{sleep(1)}
+		}
+		{continue}
+	}
+	{dll||[(long_int;addr;addr;long_int)move_struct_in_equal_table("text(var_local|MSG|)";"text(var_local|MSG_ptr|)";0)]}
+	{var_local|_hwnd_|="text(dll||[(addr;addr;int;char;long_int;long_int)read_table_case("text(var_local|MSG|)";1;"long_int";0;0)])"}
+	{var_local|message|=dll||[(int;addr;int;char;long_int;long_int)read_table_case("text(var_local|MSG|)";2;"int";0;0)]}
+	{var_local|wparam|=dll||[(long_int;addr;int;char;long_int;long_int)read_table_case("text(var_local|MSG|)";3;"long_int";0;0)]}
+	{var_local|lparam|=dll||[(long_int;addr;int;char;long_int;long_int)read_table_case("text(var_local|MSG|)";4;"long_int";0;0)]}
+	
+	$//{dll|msvcrt.dll|[(void;char;addr;int;int;long_int;long_int)printf("_hwnd_: 0x%016llx, message: 0x%08x (%d), wparam: 0x%016llx, lparam: 0x%016llx[/n]";"text(var_local|_hwnd_|)";var_local|message|;var_local|message|;var_local|wparam|;var_local|lparam|)]}//$
+	
+	{if||(var_local|message|)||?=||18||
+		{break}
+	}
+	{if||(var_local|message|)||?=||16||
+		{dll|user32.dll|[(void;addr)DestroyWindow("text(var_local|hwnd|)")]}
+		{dll|user32.dll|[(void;int)PostQuitMessage(0)]}
+	elif?||text_eval("text(var_local|_hwnd_|)";"?=";"text(var_local|hwndOK|)")||
+		{var_local|x|=var_local|lparam|&65535}
+		{var_local|y|=(var_local|lparam|-var_local|x|)#65536}
+		$//{print("x "var_local|x|" y "var_local|y|)}//$
+		{if(||(var_local|message|)||?=||514|| and (||(var_local|x|)||>=||0|| and ||(var_local|x|)||<=||100||) and (||(var_local|y|)||>=||0|| and ||(var_local|y|)||<=||32||))
+			{var_local|text_length|=dll|user32.dll|[(int;addr;addr;int)GetWindowTextA("text(var_local|hwndEdit|)";"text(var_local|result_buffer|)";1024)]}
+			{dll|user32.dll|[(void;addr)DestroyWindow("text(var_local|hwnd|)")]}
+			{dll|user32.dll|[(void;int)PostQuitMessage(0)]}
+		else
+			{dll|user32.dll|[(void;addr)TranslateMessage("text(var_local|MSG_ptr|)")]}
+			{dll|user32.dll|[(void;addr)DispatchMessageA("text(var_local|MSG_ptr|)")]}
+		}
+	elif?||text_eval("text(var_local|_hwnd_|)";"?=";"text(var_local|hwndCancel|)")||
+		{var_local|x|=var_local|lparam|&65535}
+		{var_local|y|=(var_local|lparam|-var_local|x|)#65536}
+		$//{print("x "var_local|x|" y "var_local|y|)}//$
+		{if(||(var_local|message|)||?=||514|| and (||(var_local|x|)||>=||0|| and ||(var_local|x|)||<=||100||) and (||(var_local|y|)||>=||0|| and ||(var_local|y|)||<=||32||))
+			{dll|user32.dll|[(void;addr)DestroyWindow("text(var_local|hwnd|)")]}
+			{dll|user32.dll|[(void;int)PostQuitMessage(0)]}
+		else
+			{dll|user32.dll|[(void;addr)TranslateMessage("text(var_local|MSG_ptr|)")]}
+			{dll|user32.dll|[(void;addr)DispatchMessageA("text(var_local|MSG_ptr|)")]}
+		}
+	elif?||text_eval("text(var_local|_hwnd_|)";"?=";"text(var_local|hwndEdit|)")||
+		{if(||(var_local|message|)||?=||256|| and ||(var_local|wparam|)||?=||13||)
+			{var_local|text_length|=dll|user32.dll|[(int;addr;addr;int)GetWindowTextA("text(var_local|hwndEdit|)";"text(var_local|result_buffer|)";1024)]}
+			{dll|user32.dll|[(void;addr)DestroyWindow("text(var_local|hwnd|)")]}
+			{dll|user32.dll|[(void;int)PostQuitMessage(0)]}
+		else
+			{dll|user32.dll|[(void;addr)TranslateMessage("text(var_local|MSG_ptr|)")]}
+			{dll|user32.dll|[(void;addr)DispatchMessageA("text(var_local|MSG_ptr|)")]}
+		}
+	else
+		{dll|user32.dll|[(void;addr)TranslateMessage("text(var_local|MSG_ptr|)")]}
+		{dll|user32.dll|[(void;addr)DispatchMessageA("text(var_local|MSG_ptr|)")]}
+	}
+}
+
+{dll||[(void;addr)free_struct_from_table_alloc("text(var_local|MSG_ptr|)")]}
+
+{dll|gdi32.dll|[(void;addr)DeleteObject("text(var_local|hBrush|)")]}
+{dll|gdi32.dll|[(void;addr)DeleteObject("text(var_local|hFont|)")]}
+
+$//copie qui ne change rien, c'est juste pour convertir addr en char//$
+{var_local|result|="text(dll|msvcrt.dll|[(char;addr;addr;int)memcpy("text(var_local|result_buffer|)";"text(var_local|result_buffer|)";0)])"}
+$//{dll|msvcrt.dll|[(void;char;int;addr)printf("%d : %s[/n]";var_local|text_length|;"text(var_local|result_buffer|)")]}//$
+{dll|msvcrt.dll|[(void;addr)free("text(var_local|result_buffer|)")]}
+
+{dll|user32.dll|[(void;addr;addr)UnregisterClassA("text(var_local|lpszClassName|)";"text(var_local|hInstance|)")]}
+{dll|msvcrt.dll|[(void;addr)free("text(var_local|lpszClassName|)")]}
+
+$//contenu de l'entrée utilisateur//$
+{print("resultat: text(var_local|result|)")}
+]]]
