@@ -44,10 +44,20 @@ hello &#92; world ; !</pre>
 
 <br><br>
 
-<h3>test_table.dll</h3>
+<h3>dll_service.dll</h3>
 
-L'API est en cour d'écriture pour rajouter à frc_service.dll le moyen de passer des structures en mémoire qui sont compatible en C/windows.
-Le code est déjà fonctionnel pour l'écriture, il manque encore la modification de valeur de structure existante et la lecture d'une structure de réponse.
+La version supérieur grandement améliorée de frc_service.dll :
+<br>
+Le nombre d'argument que l'on peut fournir est infini (ou presque car la stack attribué ne peut plus suivre si beaucoup trop d'argument).
+<br>
+On peut créer et lire des structures de manière dynamique.
+<br>
+Pour montrer la puissance, installez la dernière version de fr-simplecode et la dll dll_service.dll :<br>
+Passez la commande en plus du nom de l'exécutable :  <code>--dll[0]:dll_service.dll --dll_filters[0]</code> avec dll_service.dll ou sont chemin pour installer et désactiver la sécurité (pour un environnement web, remettre la sécurité maximale avec <code>--dll[0]:</code> qui bloque l'accès au DLLs).<br>
+Si il n'y a pas d'erreur, lancez le script create_windows.frc dans la console avec la commande : <code>[[[{use_script(create_windows.frc)}]]]</code> et la fenêtre input aparait en 100% interpréteur.<br><br>
+Le code source n'est pas diffusé pour cette version pour des raisons de droit d'auteur mais aussi de sécurité.<br><br>
+Pour lié la dll à vôtre projet C/C++ dll_service_api.h permet de connaître les fonctions et les importations pour sont fonctionnement.<br>Pour plus d'information, voir le wiki.
+
 
 <br><br>
 
